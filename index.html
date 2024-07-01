@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 13 - Canvas Name Drawer</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 45vh;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 1vh 1vh black;
+}
+
+h2 {
+    text-align: center;
+    color: white;
+    text-shadow: 0px 3px 10px rgba(0, 0, 0, 0.582);
+    -webkit-text-stroke: 1.5px rgb(3, 153, 103);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    align-items: center;
+    gap: 1.5vh;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+label{
+    font-weight:bold;
+    color: rgb(1, 138, 92);
+    text-shadow: 0px 3px 10px rgba(0, 0, 0, 0.582);
+}
+
+#rowncolumns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+input,select{
+    padding: 8px;
+    width: 150%;
+    border: 1px solid rgb(3, 153, 103);
+    border-radius: 1vh;
+}
+
+button {
+    padding: 8px 20px;
+    background-color: rgb(3, 153, 103);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:active{
+    box-shadow: inset 0 0 15px black;
+}
+
+input[type="text"]{
+    width: 141%;
+}
+
+input[type="color"] {
+  border-radius: 5px;
+  width: 150%;
+  padding: 0;
+  border: 5px solid #DDD;
+}
+
+input[type="color"]::-moz-color-swatch {
+  border: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+.color{
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ffffff;
+    border-radius: 1vh;
+}
+
+canvas {
+    border: 1px solid rgb(3, 153, 103);
+    width: 100%;
+    height: 100px;
+    margin-top: 1vh;
+    border-radius: 3vh;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Task 13 - Canvas Name Drawer</h2>
+        <form class="input-group">
+            <label>Name</label>
+            <input type="text" id="name" placeholder="Enter Your Name">
+            <label>Color</label>
+            <input type="color" class="color" id="name-color" value="#ffffff">
+            <label>Font Style</label>
+            <select id="font">
+                <option>-Select Font Style-</option>
+                <option value="Arial">Arial</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="Courier">Courier</option>
+                <option value="Brush Script MT ">Brush Script MT </option>
+                <option value="cursive">Cursive</option>
+            </select>
+        </form>
+        <button onclick="draw()">Draw</button>
+        <canvas id="myCanvas"></canvas>
+    </div>
+
+    <script>
+    const canvas = document.getElementById('myCanvas')
+    const ctx = canvas.getContext("2d")
+
+    function draw(){
+        let text = document.getElementById("name");
+        let color = document.getElementById("name-color");
+        let font = document.getElementById("font");
+
+        if(text.value.trim()===""){
+            alert("Enter a Name!");
+            return;
+        }
+
+        if (color.value==="#ffffff"){
+            alert("Select a Color");
+            return;
+        }
+
+        if (font.value === "-Select Font Style-"){
+            alert("Select a fontstyle");
+            return;
+        }
+
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        let textfont = font.value;
+
+        let size=70
+        ctx.font = `bold ${size}px ` +textfont;
+        ctx.strokeStyle=color.value;
+        ctx.lineWidth=2;
+
+        let name = text.value;
+        let namesize = ctx.measureText(name).width;
+
+        while (namesize > canvas.width) {
+            size -= 5;
+            ctx.font = `bold ${size}px ` +textfont;
+            namesize = ctx.measureText(name).width;
+        }
+
+        let topbottom = (canvas.width-namesize)/2;
+        let rightleft = canvas.height/1.8;
+
+        ctx.strokeText(name, topbottom, rightleft);
+    }
+    </script>
+</body>
+</html>
